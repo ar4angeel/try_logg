@@ -17,5 +17,3 @@ def income_func():
     elif cmd == '/new_user':
         command_dict['/new_user']
 
-if __name__ == '__main__':
- income_func()
