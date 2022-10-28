@@ -9,11 +9,13 @@ conn.commit()
 cmd = input('Введите команду, которую хотите использовать: \n')
 
 command_dict = {'/help': helper(),
-                '/new_user': NewUser().create(data = 'sample.db')}
+                '/new_user': NewUser,
+                '/selector': Prof}
 
 def income_func():
     if cmd == '/help':
         command_dict['/help']
-    elif cmd == '/new_user':
-        command_dict['/new_user']
-
+    if cmd == '/new_user':
+        command_dict['/new_user']().create(data = 'sample.db')
+    if cmd == '/selector':
+        command_dict['/selector'](cur, 'users').get_info_user()
