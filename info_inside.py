@@ -8,13 +8,13 @@ conn.commit()
 
 cmd = input('Введите команду, которую хотите использовать: \n')
 
-command_dict = {'/help': helper(),
+command_dict = {'/help': helper,
                 '/new_user': NewUser,
                 '/selector': Prof}
 
 def income_func():
     if cmd == '/help':
-        command_dict['/help']
+        command_dict['/help']()
     if cmd == '/new_user':
         command_dict['/new_user']().create(data = 'sample.db')
     if cmd == '/selector':
