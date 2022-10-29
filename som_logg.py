@@ -66,7 +66,43 @@ class Prof:
         self.table = table
 
     def get_info_user(self):
-        rows = self.cur.execute(f'SELECT {self.login}, {self.pasw}, {self.alternative} FROM {self.table}')
-        for row in rows:
-            print(row.fetchone())
+        rows = self.cur.execute(f'SELECT {self.login}, {self.pasw}, {self.alternative} FROM {self.table}').fetchall()
 
+        def log_in(rows):
+            list_for_append = []
+            for row in rows:
+                list_for_append.append(row[0])
+            print('Список логинов базы данных: '+ str(list_for_append))
+
+        def pasw(rows):
+            list_for_append = []
+            for row in rows:
+                list_for_append.append(row[1])
+            print('Список паролей базы данных: '+ str(list_for_append))
+
+        def alter(rows):
+            list_for_append = []
+            for row in rows:
+                list_for_append.append(row[2])
+            print('Список альтернативных ответов базы данных: '+ str(list_for_append))
+
+
+        com_dict = {'/login': log_in,
+                    '/pasw': pasw,
+                    '/alter': alter}
+
+        def income_function():      #сделать обработчик событий своими руками (чтобы функция отработала и спросила работать ли дальше?)
+            com = input('/login, /pasw, /alter - ? \n')
+            period = input('Следующий прогон будет? /next or /stop? ')
+            if period == '/next':
+                if com == '/login':
+                    com_dict['/login'](rows)
+                if com == '/pasw':
+                    com_dict['/pasw'](rows)
+                if com == '/alter':
+                    com_dict['/alter'](rows)
+                income_function()
+            else:
+                pass
+
+        income_function()

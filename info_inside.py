@@ -19,3 +19,5 @@ def income_func():
         command_dict['/new_user']().create(data = 'sample.db')
     if cmd == '/selector':
         command_dict['/selector'](cur, 'users').get_info_user()
+
+income_func()
