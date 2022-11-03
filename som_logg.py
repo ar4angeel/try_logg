@@ -44,18 +44,18 @@ class NewUser:
         conn.commit()
 
 class Login:
-    def __init__(self):
-        self.login_pass = False
-        self.login_get = False
-        self.pasw_get = False
-        self.alternative_get = False
-        self.userid_pass = False
-        self.userid_get = False
+    def __init__(self, db):
+        self.database = db
 
-    def insert_data(self, data, connection, cursor):
-        conn = sqlite3.connect(data)
+    def insert_data(self):
         cur = conn.cursor()
-        cur.execute('''SELECT login, pasw, alternative FROM users''')
+        cur.execute('''SELECT login, pasw, alternative FROM users ''')
+
+    def get_login(self, login_find):
+        cur = sqlite3.connect(self.database).cursor()
+        perpose = cur.execute(f'''SELECT login FROM users WHERE login LIKE "%{login_find}%"''').fetchone()
+        if perpose == None:
+            return
 
 class Prof:
     def __init__(self, cursor, table):
@@ -91,7 +91,7 @@ class Prof:
                     '/pasw': pasw,
                     '/alter': alter}
 
-        def income_function():      #сделать обработчик событий своими руками (чтобы функция отработала и спросила работать ли дальше?)
+        def income_function():
             com = input('/login, /pasw, /alter - ? \n')
             period = input('Следующий прогон будет? /next or /stop? ')
             if period == '/next':
