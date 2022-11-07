@@ -91,9 +91,9 @@ class LoginCreate:
         user = (create_login(), create_pasw(), create_alter())
         cur.execute('''INSERT INTO users VALUES(?, ?, ?);''', user)
         conn.commit()
-        self.__delattr__(self.login)
-        self.__delattr__(self.pasw)
-        self.__delattr__(self.alter)
+        self.__delattr__(self.login)  #ошибка Unresolved attribute reference 'login' for class 'LoginCreate'
+        self.__delattr__(self.pasw)   #ошибка Unresolved attribute reference 'login' for class 'LoginCreate'
+        self.__delattr__(self.alter)  #ошибка Unresolved attribute reference 'login' for class 'LoginCreate'
 
 
 class Prof:
