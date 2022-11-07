@@ -11,13 +11,15 @@ def pr():
     priv = cur.execute(f'''SELECT login FROM users WHERE login LIKE "%{opt}%"''')
     print(priv)
     privet = priv.fetchone()
-    print(privet[0])
+    print(type(privet[0]))
 
 class Add:
     def __init__(self, a):
         self.sec = a
 
     def sum(self, b):
-        self.__setattr__(Add,sec,b)
-        string = self.a + self.b
+        self.b = b
+        string = self.sec + self.b
         print(string)
+
+pr()

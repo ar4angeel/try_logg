@@ -3,6 +3,9 @@ conn = sqlite3.connect('sample.db')
 cur = conn.cursor()
 
 text = '''/help - помощь;\n/new_user - новый лог;\n/login - логгинг;'''
+login_main = 'login'
+alter_main = 'alternative'
+pasw_main = 'pasw'
 
 def helper():
     print(text)
@@ -30,38 +33,74 @@ class Shuffle:
                 return(self.itog)
             return()
 
-class NewUser:
-    def __init__(self):
-        self.login = input('Введите логин: ')
-        self.pasw = input('Введите пароль: ')
-        self.alternative = input('Введите ответ на альтернативный вопрос: ')
+# class NewUser:
+#     def __init__(self):
+#         self.login = input('Введите логин: ')
+#         self.pasw = input('Введите пароль: ')
+#         self.alternative = input('Введите ответ на альтернативный вопрос: ')
+#
+#     def create(self, data = None):
+#         conn = sqlite3.connect(data)
+#         cur = conn.cursor()
+#         user = (self.login, self.pasw, self.alternative)
+#         cur.execute('''INSERT INTO users VALUES(?, ?, ?);''', user)
+#         conn.commit()
 
-    def create(self, data = None):
-        conn = sqlite3.connect(data)
-        cur = conn.cursor()
-        user = (self.login, self.pasw, self.alternative)
-        cur.execute('''INSERT INTO users VALUES(?, ?, ?);''', user)
-        conn.commit()
-
-class Login:
+class LoginCreate:
     def __init__(self, db):
         self.database = db
 
-    def insert_data(self):
-        cur = conn.cursor()
-        cur.execute('''SELECT login, pasw, alternative FROM users ''')
-
-    def get_login(self, login_find):
+    def get_something(self, what_get, what_find):
+        line_getter = {login_main: None,
+                            pasw_main: None,
+                            alter_main: None}
         cur = sqlite3.connect(self.database).cursor()
-        perpose = cur.execute(f'''SELECT login FROM users WHERE login LIKE "%{login_find}%"''').fetchone()
-        if perpose == None:
-            return
+        purpose = cur.execute(f'''SELECT {what_get} FROM users WHERE {what_get} LIKE "%{what_find}%"''').fetchone()
+        if purpose == None:
+            line_getter[what_get] = True
+            return line_getter[what_get]
+        if purpose == str:
+            line_getter[what_get] = False
+            return line_getter[what_get]
+
+    def create_user(self):
+        sub_login = input('Введите логин: ')
+        sub_pasw = input('Введите пароль: ')
+        sub_alter = input('Введите ответ на альтернативный вопрос: ')
+
+        def create_login():
+            if self.get_something(login_main, sub_login) == True:
+                self.login = sub_login
+                return self.login
+            else:
+                print('Такой логин уже существует.')
+
+        def create_pasw():
+            self.pasw = sub_pasw
+            return self.pasw
+
+        def create_alter():
+            if self.get_something(alter_main, sub_alter) == True:
+                self.alter = sub_alter
+                return self.alter
+
+
+
+        conn = sqlite3.connect(self.database)
+        cur = conn.cursor()
+        user = (create_login(), create_pasw(), create_alter())
+        cur.execute('''INSERT INTO users VALUES(?, ?, ?);''', user)
+        conn.commit()
+        self.__delattr__(login_main)
+        self.__delattr__(pasw_main)
+        self.__delattr__(alter_main)
+
 
 class Prof:
     def __init__(self, cursor, table):
-        self.login = 'login'
-        self.pasw = 'pasw'
-        self.alternative = 'alternative'
+        self.login = login_main
+        self.pasw = pasw_main
+        self.alternative = alter_main
         self.cur = cursor
         self.table = table
 
