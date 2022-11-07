@@ -91,9 +91,9 @@ class LoginCreate:
         user = (create_login(), create_pasw(), create_alter())
         cur.execute('''INSERT INTO users VALUES(?, ?, ?);''', user)
         conn.commit()
-        self.__delattr__(login_main)
-        self.__delattr__(pasw_main)
-        self.__delattr__(alter_main)
+        self.__delattr__(self.login)
+        self.__delattr__(self.pasw)
+        self.__delattr__(self.alter)
 
 
 class Prof:
